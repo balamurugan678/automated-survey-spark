@@ -25,17 +25,25 @@ public class SurveyController {
     AbstractMessageFactory messageFactory = AbstractMessageFactory.createInstance(parameters);
 
     Survey existingSurvey = surveys.getSurvey(call.getFrom());
-    if (existingSurvey == null) {
+      if(null != parameters.get("Digits")){
+          String selectedOption = parameters.get("Digits");
+          return messageFactory.goodByeTwiMLMessage(selectedOption);
+      }
+      else if(null != parameters.get("MessageSid") && parameters.get("Body").length()==6){
+          String selectedOption = parameters.get("Body");
+          return messageFactory.goodByeTwiMLMessage(selectedOption);
+      }
+    //if (existingSurvey == null) {
       Survey survey = surveys.createSurvey(call.getFrom());
       return messageFactory.firstTwiMLQuestion(survey);
-    } else if (!existingSurvey.isDone()) {
+    /*} else if (!existingSurvey.isDone()) {
       existingSurvey.appendResponse(new Response(call.getInput()));
       surveys.updateSurvey(existingSurvey);
       if (!existingSurvey.isDone()) {
         return messageFactory.nextTwiMLQuestion(existingSurvey);
       }
     }
-    return messageFactory.goodByeTwiMLMessage();
+    return messageFactory.goodByeTwiMLMessage();*/
   };
 
 

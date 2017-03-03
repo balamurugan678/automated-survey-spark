@@ -1,6 +1,6 @@
 [
     {
-        text: 'Please tell us your age.',
+        text: 'Please send us your PNR, we shall be sending the train times.',
         type: 'number'
     },
     {

@@ -12,7 +12,10 @@ public class TwiMLMessageFactory extends AbstractMessageFactory {
 
   String firstTwiMLQuestion(Survey survey) throws TwiMLException, UnsupportedEncodingException {
     VoiceResponse.Builder voiceResponseBuilder = new VoiceResponse.Builder()
-        .say(new Say.Builder("Thanks for taking our survey.").build());
+        .say(new Say.Builder("Thanks for calling Eurostar." )
+            .voice(Say.Voice.ALICE)
+            .language(Say.Language.EN_GB)
+            .build());
 
     return nextTwiMLQuestion(survey, voiceResponseBuilder).toXml();
   }
@@ -31,8 +34,8 @@ public class TwiMLMessageFactory extends AbstractMessageFactory {
   private VoiceResponse buildQuestionTwiML(Survey survey, Question question,
       VoiceResponse.Builder twiml) throws TwiMLException, UnsupportedEncodingException {
     VoiceResponse.Builder response = twiml != null ? twiml : new VoiceResponse.Builder();
-    Say say = new Say.Builder(question.getText()).build();
-    response.say(say);
+    /*Say say = new Say.Builder(question.getText()).build();
+    response.say(say);*/
     // Depending on the question type, create different TwiML verbs.
     switch (question.getType()) {
       case "text":
@@ -51,7 +54,8 @@ public class TwiMLMessageFactory extends AbstractMessageFactory {
   private VoiceResponse.Builder appendNumberQuestion(VoiceResponse.Builder twiml)
       throws TwiMLException {
     Say numInstructions =
-        new Say.Builder("Enter the number on your keypad, followed by the #.").build();
+        new Say.Builder("Please enter the Eurostar Frequent Traveller number on your keypad, followed by the #.").voice(Say.Voice.ALICE)
+                .language(Say.Language.EN_GB).build();
     twiml.say(numInstructions);
     // Listen until a user presses "#"
     Gather numberGather = new Gather.Builder().finishOnKey("#").build();
@@ -99,9 +103,11 @@ public class TwiMLMessageFactory extends AbstractMessageFactory {
     return URLEncoder.encode(s, "utf-8");
   }
 
-  String goodByeTwiMLMessage() throws TwiMLException {
+  String goodByeTwiMLMessage(String message) throws TwiMLException {
     VoiceResponse voiceResponse = new VoiceResponse.Builder()
-        .say(new Say.Builder("Your responses have been recorded. Thank you for your time!").build())
+        .say(new Say.Builder("Your Eurostar Frequent Traveller number is "+message+". You have 255 EFT points and your next train departs at 09:18 on 22nd December. Enjoy your journey with Eurostar!")
+            .voice(Say.Voice.ALICE)
+            .language(Say.Language.EN_GB).build())
         .build();
 
     return voiceResponse.toXml();

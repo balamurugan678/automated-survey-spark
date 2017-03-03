@@ -22,5 +22,5 @@ public abstract class AbstractMessageFactory {
   abstract String nextTwiMLQuestion(Survey survey)
       throws TwiMLException, UnsupportedEncodingException;
 
-  abstract String goodByeTwiMLMessage() throws TwiMLException;
+  abstract String goodByeTwiMLMessage(String selectedOption) throws TwiMLException;
 }
